@@ -106,7 +106,7 @@ extension HDUValue {
         }
     }
     
-    public static func ==<T: HDUValue>(lhs: HDUValue, rhs: T?) -> Bool {
+    public static func ==<T: HDUValue>(lhs: Self, rhs: T?) -> Bool {
         guard type(of: lhs) == T.self else { return false }
         if let right = rhs {
             return lhs.hashable == right.hashable
@@ -115,7 +115,7 @@ extension HDUValue {
         }
     }
     
-    public static func ==<T: HDUValue>(lhs: T?, rhs: HDUValue) -> Bool {
+    public static func ==<T: HDUValue>(lhs: T?, rhs: Self) -> Bool {
         guard T.self == type(of: rhs) else { return false }
         if let left = lhs {
             return left.hashable == rhs.hashable
@@ -124,12 +124,12 @@ extension HDUValue {
         }
     }
 
-    public static func ==(lhs: HDUValue, rhs: HDUValue) -> Bool {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
         guard type(of: lhs) == type(of: rhs) else { return false }
         return lhs.hashable == rhs.hashable
     }
 
-    public static func !=(lhs: HDUValue, rhs: HDUValue) -> Bool {
+    public static func !=(lhs: Self, rhs: Self) -> Bool {
         guard type(of: lhs) == type(of: rhs) else { return false }
         return lhs.hashable != rhs.hashable
     }
