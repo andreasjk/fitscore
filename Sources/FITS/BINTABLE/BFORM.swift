@@ -24,7 +24,23 @@
 
 import Foundation
 
-public enum BFORM : FORM {
+public enum BFORM : FORM, Equatable {
+
+    public static func ==(lhs: BFORM, rhs: BFORM) -> Bool {
+        switch (lhs, rhs) {
+        case (.L(let a), .L(let b)), (.X(let a), .X(let b)), (.B(let a), .B(let b)),
+             (.I(let a), .I(let b)), (.J(let a), .J(let b)), (.K(let a), .K(let b)),
+             (.A(let a), .A(let b)), (.E(let a), .E(let b)), (.D(let a), .D(let b)),
+             (.C(let a), .C(let b)), (.M(let a), .M(let b)),
+             (.PL(let a), .PL(let b)), (.PX(let a), .PX(let b)), (.PB(let a), .PB(let b)),
+             (.PI(let a), .PI(let b)), (.PJ(let a), .PJ(let b)), (.PK(let a), .PK(let b)),
+             (.PA(let a), .PA(let b)), (.PE(let a), .PE(let b)), (.PC(let a), .PC(let b)),
+             (.QD(let a), .QD(let b)), (.QM(let a), .QM(let b)):
+            return a == b
+        default:
+            return false
+        }
+    }
 
     case L(r: Int)
     case X(r: Int)

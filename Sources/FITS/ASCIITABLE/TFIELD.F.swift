@@ -73,7 +73,7 @@ extension TFIELD {
         }
         
         override public var description: String {
-            return val != nil ? "\(val!)" : "-/-"
+            return val.map { "\($0)" } ?? "-/-"
         }
     }
 }

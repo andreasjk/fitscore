@@ -29,8 +29,38 @@ import Foundation
  
  w is the width in characters of displayed values, m is the minimum number of digits displayed, d is the number of digits to right of decimal, and e is number of digits in exponent. The .m and Ee fields are optional.
  */
-public enum TDISP : DISP {
-    
+public enum TDISP : DISP, Equatable {
+
+    private static func optionalEqual(_ a: Int?, _ b: Int?) -> Bool {
+        switch (a, b) {
+        case (.some(let x), .some(let y)): return x == y
+        case (.none, .none): return true
+        default: return false
+        }
+    }
+
+    public static func ==(lhs: TDISP, rhs: TDISP) -> Bool {
+        switch (lhs, rhs) {
+        case (.A(let a), .A(let b)):
+            return a == b
+        case (.I(let w1, let m1), .I(let w2, let m2)),
+             (.B(let w1, let m1), .B(let w2, let m2)),
+             (.O(let w1, let m1), .O(let w2, let m2)),
+             (.Z(let w1, let m1), .Z(let w2, let m2)):
+            return w1 == w2 && optionalEqual(m1, m2)
+        case (.F(let w1, let d1), .F(let w2, let d2)),
+             (.EN(let w1, let d1), .EN(let w2, let d2)),
+             (.ES(let w1, let d1), .ES(let w2, let d2)):
+            return w1 == w2 && d1 == d2
+        case (.E(let w1, let d1, let e1), .E(let w2, let d2, let e2)),
+             (.G(let w1, let d1, let e1), .G(let w2, let d2, let e2)),
+             (.D(let w1, let d1, let e1), .D(let w2, let d2, let e2)):
+            return w1 == w2 && d1 == d2 && optionalEqual(e1, e2)
+        default:
+            return false
+        }
+    }
+
     /// Character
     case A(w: Int)
     
@@ -152,25 +182,25 @@ public enum TDISP : DISP {
         case .A(let w):
             return "A\(w)"
         case .I(let w, let m):
-            return "I\(w)" + ((m != nil) ? ".\(m!)" : "")
+            return "I\(w)" + (m.map { ".\($0)" } ?? "")
         case .B(let w, let m):
-            return "B\(w)" + ((m != nil) ? ".\(m!)" : "")
+            return "B\(w)" + (m.map { ".\($0)" } ?? "")
         case .O(let w, let m):
-            return "O\(w)" + ((m != nil) ? ".\(m!)" : "")
+            return "O\(w)" + (m.map { ".\($0)" } ?? "")
         case .Z(let w, let m):
-            return "Z\(w)" + ((m != nil) ? ".\(m!)" : "")
+            return "Z\(w)" + (m.map { ".\($0)" } ?? "")
         case .F(let w, let d):
             return "F\(w).\(d)"
         case .E(let w, let d, let e):
-            return "E\(w).\(d)" + ((e != nil) ? "e\(e!)" : "")
+            return "E\(w).\(d)" + (e.map { "e\($0)" } ?? "")
         case .ES(let w, let d):
             return "ES\(w).\(d)"
         case .EN(let w, let d):
             return "EN\(w).\(d)"
         case .G(let w, let d, let e):
-            return "G\(w).\(d)" + ((e != nil) ? "e\(e!)" : "")
+            return "G\(w).\(d)" + (e.map { "e\($0)" } ?? "")
         case .D(let w, let d, let e):
-            return "D\(w).\(d)" + ((e != nil) ? "e\(e!)" : "")
+            return "D\(w).\(d)" + (e.map { "e\($0)" } ?? "")
         }
     }
 }

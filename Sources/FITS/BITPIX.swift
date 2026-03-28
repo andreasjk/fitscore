@@ -90,4 +90,8 @@ public enum BITPIX : Int {
         case .FLOAT64: return MemoryLayout<Double>.size
         }
     }
+
+    public static func ==(lhs: BITPIX, rhs: BITPIX) -> Bool {
+        lhs.rawValue == rhs.rawValue
+    }
 }

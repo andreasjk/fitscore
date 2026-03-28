@@ -23,8 +23,21 @@
  */
 import Foundation
 
-public enum TFORM : FORM {
-    
+public enum TFORM : FORM, Equatable {
+
+    public static func ==(lhs: TFORM, rhs: TFORM) -> Bool {
+        switch (lhs, rhs) {
+        case (.A(let a), .A(let b)), (.I(let a), .I(let b)):
+            return a == b
+        case (.F(let w1, let d1), .F(let w2, let d2)),
+             (.E(let w1, let d1), .E(let w2, let d2)),
+             (.D(let w1, let d1), .D(let w2, let d2)):
+            return w1 == w2 && d1 == d2
+        default:
+            return false
+        }
+    }
+
     /// Character
     case A(w: Int)
     

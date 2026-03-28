@@ -70,7 +70,9 @@ public final class HeaderBlock {
     
     /// Containts only a comment but neither a keyword nor a value
     public var isHeadline : Bool {
-        return keyword.isEmpty && value == nil && comment != nil
+        if value != nil { return false }
+        guard let _ = comment else { return false }
+        return keyword.isEmpty
     }
     
     /// Containts the `HDUKeyworld.XTENSION`
@@ -87,7 +89,13 @@ extension HeaderBlock : Hashable {
     }
     
     public static func ==(lhs : HeaderBlock, rhs : HeaderBlock) -> Bool {
-        return lhs.keyword == rhs.keyword && lhs.value?.hashable == rhs.value?.hashable && lhs.comment == rhs.comment
+        guard lhs.keyword == rhs.keyword else { return false }
+        guard lhs.value?.hashable == rhs.value?.hashable else { return false }
+        switch (lhs.comment, rhs.comment) {
+        case let (l?, r?): return l == r
+        case (nil, nil): return true
+        default: return false
+        }
     }
 }
 
@@ -99,7 +107,14 @@ extension HeaderBlock : CustomStringConvertible {
         if let string = String(data: data, encoding: .ascii){
             return string
         } else {
-            return "\(keyword) \(value != nil ? "= "+value!.description : "") \(value != nil && comment != nil ? "/ "+comment! : comment ?? "")"
+            let valueStr = value.map { "= " + $0.description } ?? ""
+            let commentStr: String
+            if value != nil, let c = comment {
+                commentStr = "/ " + c
+            } else {
+                commentStr = comment ?? ""
+            }
+            return "\(keyword) \(valueStr) \(commentStr)"
         }
     }
 }

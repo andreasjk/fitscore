@@ -89,7 +89,7 @@ struct AnyHDUValue {
 }
 
 extension HDUValue {
-    
+
     public static func ==(lhs: HDUValue?, rhs: Self) -> Bool {
         if let left = lhs {
             return left.hashable == rhs.hashable
@@ -97,7 +97,7 @@ extension HDUValue {
             return false
         }
     }
-    
+
     public static func ==(lhs: Self, rhs: HDUValue?) -> Bool {
         if let right = rhs {
             return lhs.hashable == right.hashable
@@ -105,7 +105,7 @@ extension HDUValue {
             return false
         }
     }
-    
+
     public static func ==<T: HDUValue>(lhs: Self, rhs: T?) -> Bool {
         guard type(of: lhs) == T.self else { return false }
         if let right = rhs {
@@ -114,7 +114,7 @@ extension HDUValue {
             return false
         }
     }
-    
+
     public static func ==<T: HDUValue>(lhs: T?, rhs: Self) -> Bool {
         guard T.self == type(of: rhs) else { return false }
         if let left = lhs {
@@ -136,11 +136,11 @@ extension HDUValue {
 }
 
 extension HDUValue where Self : Hashable {
-    
+
     public func hash(hasher: inout Hasher){
         hasher.combine(self)
     }
-    
+
     public var hashable : AnyHashable {
         AnyHashable(self)
     }

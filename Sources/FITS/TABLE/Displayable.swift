@@ -59,7 +59,13 @@ extension _Displayable {
     /// compute a string for a missing value
     func empty(_ form: FORM?, _ null: String?, _ fallback: String) -> String {
 
-        return null != nil ? null! : (form != nil ? String(repeating: " ", count: form!.length) : fallback)
+        if let null = null {
+            return null
+        } else if let form = form {
+            return String(repeating: " ", count: form.length)
+        } else {
+            return fallback
+        }
     }
 }
 
